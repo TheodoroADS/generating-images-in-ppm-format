@@ -61,6 +61,53 @@ def france(u):
     else:
         return (255,0,0) #red
 
+def stripes(u, v):
+        #change of basis 
+    uu = (u+v)*sqrt2over2
+    # vv = (v-u) * sqrt2over2
+
+    if(uu % 20 < 10):
+        return (1,0,0)
+    else:
+        return (1,1,1)
+
+def inv_stripes(u, v):
+        #change of basis 
+    # uu = (u+v)*sqrt2over2
+    vv = (v-u) * sqrt2over2
+
+    if(vv % 20 < 10):
+        return (1,1,1)
+    else:
+        return (0,1,1)
+
+def crosses(u,v): 
+    uu = (u+v)*sqrt2over2
+    vv = (v-u) * sqrt2over2
+
+    if(uu % 20 < 10):
+        return (0.1,0.1,0.1)
+    elif (vv % 20 < 10):
+        return (0.7,0, 0)
+    else:
+        return (1,0,1)
+
+
+def jooj(u,v):
+
+    u = u/WIDTH
+    v = v/HEIGHT
+
+    return (u + v, u-v, 1)
+
+
+def trig(u,v):
+
+    n = 0.01
+
+    return ((sin(u*n) + 1)/2, (cos(v*n)+1)/2, (sin(u * v * n) +1)/2)
+
+
 def brazil(u,v,a,b, radius, ribbon_width):
 
 
@@ -73,7 +120,7 @@ def brazil(u,v,a,b, radius, ribbon_width):
 
         #checking if we are inside the circle
 
-        if ((u - cx)**2 + (v - cy)**2 <= radius):
+        if ((u - cx)**2 + (v - cy)**2 <= radius**2):
 
             if (uu < ribbon_width/2 and uu > -ribbon_width/2):
                 return (0.9,0.9,0.9)
@@ -91,6 +138,7 @@ def centerd_square(u,v):
         return (1,0,0)
     else:
         return (0,0,1)   
+        
 
 
 f = open("img.ppm", "w")
@@ -100,8 +148,10 @@ f.write(f"P3 \n {WIDTH} {HEIGHT} 255 \n")
 for y in range(HEIGHT):
     for x in range(WIDTH):
 
-        r , g, b = brazil(x,y, 150, 150, 1500, 10)
-        # r , g, b = centerd_square(x,y)c
+        #just call one of the functions above here!
+
+        # r , g, b = brazil(x,y, 150, 150, 40, 10)
+        r , g, b = trig(x,y)
 
         f.write(f"{int(r*255)} {int(g*255)} {int(b*255)} ")
 
