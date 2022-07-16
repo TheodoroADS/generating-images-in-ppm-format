@@ -1,4 +1,4 @@
-from math import sin, cos
+from math import sin, cos, sqrt , atan
 
 WIDTH = 256
 HEIGHT = 256
@@ -110,7 +110,6 @@ def trig(u,v):
 
 def brazil(u,v,a,b, radius, ribbon_width):
 
-
     # checking if the coordinates are inside the diamond 
     #change of basis 
     uu = (u - cx +v - cy)*sqrt2over2
@@ -140,6 +139,47 @@ def centerd_square(u,v):
         return (0,0,1)   
         
 
+def trig2(u,v):
+    
+    n = 1
+
+    if( sin(u * n)**2 + cos(v * n)**2 < 1):
+
+        return (1,1,0)
+    else:
+        return (1,0,0)
+
+def polar(u,v):
+
+    uu = u -cx
+    vv = v - cy
+
+    r = sqrt(uu**2 + vv**2)
+
+    theta = atan(vv/uu) if (uu != 0) else 0
+
+    if (r*theta %20 < 10):
+        return (1,1,0)
+    elif (r * theta % 20 > 15):
+        return (0,0,0.7)
+    else:
+        return (0,0.6,0)
+
+
+def spiral(u,v):
+
+    uu = u -cx
+    vv = v - cy
+
+    r = sqrt(uu**2 + vv**2)
+
+    theta = atan(vv/uu) if (uu != 0) else 0
+
+    if ((r < WIDTH/3 + 1 and r > WIDTH/3 -1) or (r <= WIDTH/3 and theta > 0)):
+        return (0,0,0)
+    else:
+        return (1,1,0)
+
 
 f = open("img.ppm", "w")
 
@@ -151,7 +191,7 @@ for y in range(HEIGHT):
         #just call one of the functions above here!
 
         # r , g, b = brazil(x,y, 150, 150, 40, 10)
-        r , g, b = trig(x,y)
+        r , g, b = spiral(x,y)
 
         f.write(f"{int(r*255)} {int(g*255)} {int(b*255)} ")
 
